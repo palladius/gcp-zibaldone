@@ -1,0 +1,4 @@
+source "https://rubygems.org"
+
+# Function dependencies, for example:
+# gem "package", "~> version"

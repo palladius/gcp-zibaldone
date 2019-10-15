@@ -4,6 +4,8 @@ set -e
 echo Sourcing the project id or exiting
 source ../../../.env
 
+export COLOR=LOCALHOST_VIOLET
+
 echo "Found project id: $PROJECT_ID. Now calling the GCGF with parameter :)"
 
 @echo "1. Call via gcloud.."

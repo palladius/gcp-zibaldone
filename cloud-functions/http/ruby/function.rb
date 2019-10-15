@@ -1,7 +1,9 @@
 require 'json'
 
+VERSION = "1.0"
+
 # Responds to any HTTP request.
-class HelloWorld
+class rbHelloworld
 
   # @param req [Rack::Request] HTTP request context.
   def initialize(req)
@@ -14,8 +16,8 @@ class HelloWorld
   def call
     msg = 'Hello World (send me a :message via JSON for me to return that instead)!'
     msg = msg + "\n color=#{ENV["color"]}" if ENV["color"]
-    msg = msg + " \nregion=#{ENV["region"]}" if ENV["region"]
-    msg += "-- by your GCF Ruby2.5alpha"
+    msg = msg + " \n region=#{ENV["region"]}" if ENV["region"]
+    msg += "\n\n-- by your GCF Ruby2.5alpha , code rbHelloworld v.#{VERSION}"
     if @req.params.key?('message')
       msg += "message: ;;;" + @req.params['message'] + ";;;"
     elsif @req.body.size == 0 # .isEmpty?

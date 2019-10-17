@@ -4,7 +4,7 @@ require 'json'
 # Responds to any HTTP request.
 class RbHelloworld
 
-  VERSION = "1.1"
+  VERSION = "1.2"
   INTERESTING_FIELDS = %w{ color COLOR region REGION message MESSAGE HOSTNAME GIC USER USERNAME }
     
   # @param req [Rack::Request] HTTP request context.
@@ -20,13 +20,13 @@ class RbHelloworld
   # @return [string] The message parameter from the query string or 'Hello World!'.
   # @return [hash] The JSON encoded "message" field in the body.
   def call
-    msg = "Ruby25 Hello World!"
+    msg = "Hi from RbHelloworld v.#{VERSION})!"
     msg += "\n1. send me a :message via JSON for me to return that instead)!"
     msg += "\n2. Also Im so smart I can actually detect a 'color'/'region' in ENV variables!"
     INTERESTING_FIELDS.each do |field|
       msg += "\n- #{field}=#{ENV[field]}" if ENV[field]
     end
-    msg += "\n\n-- by your GCF Ruby2.5alpha, code rbHelloworld v.#{VERSION}"
+    msg += "\n\n-- by your GCF Ruby2.5alpha"
     if @req.params.key?('message')
       msg += add_msg("Req.Param.Message", @req.params['message'])
     elsif @req.body.size == 0 # .isEmpty?
@@ -40,9 +40,10 @@ end
 def test_locally
   # test locally..
   print ENV['COLOR']
-  if ENV['TERM'] == "xterm-256color"
+  if ENV['TERM'] == "xterm-256color" # or ENV['TEST-LOCALLY'] == "TRUE"
     require 'rack'
     #print "I presume you're in localhost. Testing code here. If I were less lazy, I'd create a second ruby file which calls the function.rb.."
+    # taken from: https://stackoverflow.com/questions/17396611/what-is-the-env-variable-in-rack-middleware
     env = {
     "GATEWAY_INTERFACE" => "CGI/1.1",
     "PATH_INFO" => "/index.html",

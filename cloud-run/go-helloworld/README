@@ -1,0 +1,12 @@
+# README
+
+Riccardo only: here.
+From https://cloud.google.com/run/docs/quickstarts/build-and-deploy
+
+## INSTALL
+
+    sudo apt install golang-go
+    mkdir ~/go
+	export GOROOT=$HOME/go
+	export PATH=$PATH:$GOROOT/bin
+	# copy last two lines into .profile too..

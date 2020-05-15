@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "ricc-chart.fullname" . }}
+  name: {{ include "buildachart.fullname" . }}
   labels:
-    {{- include "ricc-chart.labels" . | nindent 4 }}
+    {{- include "buildachart.labels" . | nindent 4 }}
 spec:
 {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
 {{- end }}
   selector:
     matchLabels:
-      {{- include "ricc-chart.selectorLabels" . | nindent 6 }}
+      {{- include "buildachart.selectorLabels" . | nindent 6 }}
   template:
     metadata:
     {{- with .Values.podAnnotations }}
@@ -18,13 +18,13 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
       labels:
-        {{- include "ricc-chart.selectorLabels" . | nindent 8 }}
+        {{- include "buildachart.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "ricc-chart.serviceAccountName" . }}
+      serviceAccountName: {{ include "buildachart.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:

@@ -1,0 +1,12 @@
+#!/bin/bash
+
+
+ENV_PATH="$(dirname "$0")/../.env"
+source "$ENV_PATH" ||
+    exit 1
+
+set -x
+
+echo 1. Kubectl Current config:
+kubectl config current-context
+

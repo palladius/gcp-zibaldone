@@ -1,0 +1,13 @@
+
+#echo Current config:
+#kubectl config current-context
+
+ENV_PATH="$(dirname "$0")/../.env"
+source "$ENV_PATH" ||
+    exit 1
+
+echo 1. Kubectl Update credentials with cluster $FAVORITE_CLUSTER:
+gcloud --project $PROJECT_ID container clusters get-credentials --region $FAVORITE_CLUSTER_REGION   $FAVORITE_CLUSTER
+
+echo 2. Kubectl current config:
+kubectl config current-context

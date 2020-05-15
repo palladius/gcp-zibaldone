@@ -1,0 +1,10 @@
+#!/bin/bash
+
+#SCRIPT_DIR="$(dirname "$0")"
+ENV_PATH="$(dirname "$0")/../.env"
+source "$ENV_PATH" ||
+    exit 1
+
+echo Listing clusters from FAVORITE_CLUSTER: $FAVORITE_CLUSTER
+gcloud --project $PROJECT_ID container clusters list 
+#| grep "$FAVORITE_CLUSTER"

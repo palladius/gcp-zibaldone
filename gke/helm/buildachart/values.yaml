@@ -11,8 +11,10 @@ image:
   tag: "nginx-riccardo"
 
 imagePullSecrets: []
-nameOverride: "riccardo-app-fichissima"
-fullnameOverride: "riccardo-cherry-chart"
+#nameOverride: "riccardo-app-fichissima"
+#fullnameOverride: "riccardo-cherry-chart"
+nameOverride: "cherry-awesome-app"
+fullnameOverride: "cherry-chart"
 
 serviceAccount:
   # Specifies whether a service account should be created

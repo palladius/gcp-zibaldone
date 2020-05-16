@@ -1,4 +1,7 @@
 
+help: helm-status
+	cat Makefile
+
 # for myself..
 ricc-chart:
 	helm create ricc-chart
@@ -13,7 +16,7 @@ helm-install:
 helm-install2:
 	helm install ricc-cherry-chart2 buildachart/ --values buildachart/values.yaml | tee helm-instructions.tmp
 
-helm-info:
+helm-status:
 	@echo Using kubectl to calculate helm chart info:
 	@echo POD_NAME=`kubectl get pods -l "app.kubernetes.io/name=buildachart,app.kubernetes.io/instance=my-cherry-chart" -o jsonpath="{.items[0].metadata.name}"`
 	@echo NODE_PORT=`kubectl get --namespace default -o jsonpath="{.spec.ports[0].nodePort}" services my-cherry-chart`

@@ -41,6 +41,13 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		<!-- aggiunta da https://github.com/actions-on-google/smart-home-dashboard/issues/19 -->
+		<dependency>
+    		<groupId>javax.annotation</groupId>
+			<artifactId>javax.annotation-api</artifactId>
+			<version>1.2</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

@@ -17,16 +17,16 @@ public class DemoApplication {
 	@RestController
 	static final class MyController {
 
-		//@GetMapping("/")
+		@GetMapping("/")
 		String hello() {
 			return "Hello world!\n";
 		}
 
 
-		@GetMapping
-		String boohoo() {
-			return "aa";
-		}
+		//@GetMapping
+		//String boohoo() {
+		//	return "aa";
+		//}
 
 	}
 

@@ -47,15 +47,32 @@
       <artifactId>spring-boot-starter-webflux</artifactId>
       <scope>compile</scope>
     </dependency>
+
+    <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>5.1.5.RELEASE</version>
+        </dependency>
+
   </dependencies>
   <build>
     <plugins>
 
     <!-- SBAGLIATO! Secondo lui: https://stackoverflow.com/questions/41329851/cannot-find-symbol-error-in-maven -->
       <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-      </plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>repackage</goal>
+                    </goals>
+                    <configuration>
+                        <classifier>exec</classifier>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

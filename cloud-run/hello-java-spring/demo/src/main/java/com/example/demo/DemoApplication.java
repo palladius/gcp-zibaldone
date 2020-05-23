@@ -15,11 +15,17 @@ public class DemoApplication {
 	}
 
 	@RestController
-	static final class RiccardoController {
+	static final class MyController {
 
 		//@GetMapping("/")
 		String hello() {
 			return "Hello world!\n";
+		}
+
+
+		@GetMapping
+		String boohoo() {
+			return "aa";
 		}
 
 	}

@@ -50,10 +50,13 @@
   </dependencies>
   <build>
     <plugins>
+
+    <!-- SBAGLIATO! Secondo lui: https://stackoverflow.com/questions/41329851/cannot-find-symbol-error-in-maven -->
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
       </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>

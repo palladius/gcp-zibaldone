@@ -18,9 +18,9 @@ public class DemoApplication {
 	static final class RiccardoController {
 
 		//@GetMapping("/")
-		//String hello() {
-		//	return "Hello world!\n";
-		//}
+		String hello() {
+			return "Hello world!\n";
+		}
 
 	}
 

@@ -5,10 +5,10 @@ help:
 curl:
 	curl http://localhost:8080/
 
-run: build
+run: 
 	./mvnw
 
-run2: build
+run2: 
 	mvn spring-boot:run
 
 # https://cwiki.apache.org/confluence/display/MAVEN/NoGoalSpecifiedException

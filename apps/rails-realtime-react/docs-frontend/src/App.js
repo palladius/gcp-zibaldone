@@ -32,10 +32,14 @@ class App extends Component {
 
   render() {
     return (
-      <textarea
+        <div>
+      <h1>Benvenuti al Google Doc dei poveri..</h1>      
+        <textarea
         value={this.state.text}
         onChange={this.handleChange}
       />
+      <p>Fatto con Node (FE) e RoR (BE) e usando Channel API per parlarsi..</p>
+      </div>
     )
   }
 }

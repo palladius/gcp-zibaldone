@@ -13,3 +13,6 @@ Currently:
     * cloud-functions/
     * cloud-run/
 
+Also some apps in
+
+    * apps/

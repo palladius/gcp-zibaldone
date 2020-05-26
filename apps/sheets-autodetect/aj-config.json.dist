@@ -1,0 +1,9 @@
+{
+  "client_id": "BLAHBLAHBLAH.apps.googleusercontent.com",
+  "client_secret": "BLAHBLAHBLAH",
+  "scope": [
+    "https://www.googleapis.com/auth/drive",
+    "https://spreadsheets.google.com/feeds/"
+  ],
+  "refresh_token": "1//VERYLONGBLAHBLAH"
+}

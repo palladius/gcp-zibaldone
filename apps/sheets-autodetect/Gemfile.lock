@@ -53,6 +53,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  google-api-client
   google_drive
 
 BUNDLED WITH

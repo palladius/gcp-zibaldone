@@ -15,8 +15,6 @@ Bundler.require
 VER = '2.0'
 
 $prog_conf = {}
-
-
 $user                = $prog_conf['user']
 $pass                = $prog_conf['pass'] # GoogleSpreadsheet-specific
 $default_spreadsheet = $prog_conf['default_spreadsheet'] rescue :eror
@@ -31,11 +29,11 @@ def usage()
 end
 
 def main
-  usage unless ARGV.size > 1
+  usage unless ARGV.size == 3
 
-  doc_id       = ARGV[0]
-  worksheet_id = ARGV[1].to_i rescue $default_gid
-
+  doc_friendly_name = ARGV[0]
+  doc_id       = ARGV[1]
+  worksheet_id = ARGV[2].to_i rescue $default_gid
   url = "https://docs.google.com/a/google.com/spreadsheet/ccc?key=#{doc_id}#gid=#{worksheet_id}"
 
   begin

@@ -19,7 +19,7 @@ def max_count(arr)
 end
 
 class TypeDetector
-  @@default_arr_limit = 7
+  @@default_arr_limit = 9
   @@verbose = false
 
 =begin
@@ -30,24 +30,24 @@ class TypeDetector
 
   def self.ruby_class_to_rails_class(cls)
     mega_map = {
-        TrueClass : Boolean,
-        FalseClass : Boolean,
-        Date : Date,
-        Money : Decimal,
-        String : Text,
+        TrueClass => :Boolean,
+        FalseClass => :Boolean,
+        Integer => :Integer,
+        Float => :Float,
+        Date => :Date,
+        Time => :Time,
+        DateTime => :DateTime,
+        Money => :Decimal,
+        String => :Text,
     }
-    return mega_map[cls] rescue String
-    #from_class = [TrueClass, FalseClass, Date ]
-    #to_class = [Boolean, Boolean, Date]
+    p "ERR Unknown Type: #{cls}\n" unless cls.in?(mega_map.keys)
+    return mega_map[cls] || "Dunno#{cls}".parameterize.underscore.to_sym()
   end
 
   def self.verbose_print(arr)
     arr.each do |str|
         something = TypeDetector.autocast(str)
         p ["-", str, something, something.class]
-        #if  something.class == Money
-        #    p "100x my value ' #{something}' (want to check fractional): '#{something*100}''"
-        #end
     end
   end
 
@@ -76,7 +76,7 @@ end
         arr_limit = opts[:limit] || @@default_arr_limit 
         arr = arr.first(arr_limit) # .map{|x| x.to_s}
         self.verbose_print(arr) if @@verbose
-        arr_classes = arr.map{|x| self.autocast(x).class}
+        arr_classes = arr.map{|x| ruby_class_to_rails_class(self.autocast(x).class)}
         h = dup_hash(arr_classes)
         most_occurrent_class = h.key(max_count(arr_classes))
         ret = most_occurrent_class

@@ -84,19 +84,8 @@ def dump_all_cells(ws)
   end
 end
 
-def inferColTypeByColumn(colname, arr, verbose=true)
-  # detect from title
-  #return "date" if %w( data date ).include?(colname)
-  # nope - detect from majority of fields
-  #votes={}
-  #arr.each { |el|
-  #  votes[:bool] +=1 if el.in?(%w(true false)) 
-  #  # Float: https://stackoverflow.com/questions/1034418/determine-if-a-string-is-a-valid-float-value
-  #  votes[:float] +=1 if el =~ /^\s*[+-]?((\d+_?)*\d+(\.(\d+_?)*\d+)?|\.(\d+_?)*\d+)(\s*|([eE][+-]?(\d+_?)*\d+)\s*)$/
-  #  #print "#DEB# Inspecting #{el}: #{el.class}\n"
-  #}
+def inferColTypeByColumn(colname, arr, verbose=false)
   ret = TypeDetector.autocast_array(arr)
-  #ret = arr.map{|el| TypeDetector.autocast(el.to_s()) }
   print "#DEB# ret: #{ret} for #{arr}\n" if verbose
   winner = ret[:class]
   p "#DEB# Winner '#{winner}' for '#{colname}'. Accuracy: #{ret[:accuracy]}. Notes: #{ret[:notes]}\n" if verbose
@@ -112,8 +101,8 @@ def inspectSchemaByTabAndPopulateSchemaRow(ws)
     colname = ws[1, col]
     #col_type="string" # TODO https://support.google.com/docs/answer/3267375
     col_values = (0..(ws.num_rows-2)).map{ |i| ws.list[i][colname] } # -2: array is 0..-1 and first is title :)
-    print "#DEB# column values for '#{colname}': #{col_values}\n"
     col_type = inferColTypeByColumn(colname, col_values) # rescue "dunno"
+    print "#DEB# column values for '#{colname}': #{col_values}. TYPE=#{col_type}\n"
     railsGenString += " #{modelNameCleanup(ws[1, col])}:#{col_type}"
   end
   return railsGenString

@@ -39,7 +39,7 @@ def addSchemaWorksheet(ws, after_columns = 10)
   schema_headers = %w{ Ix TabName Model RailsCommand, Notes }
   ws.set_background_color(1, 1, 1, schema_headers.size, GoogleDrive::Worksheet::Colors::DARK_GREEN_1)
   appendToRow(ws, 1, schema_headers )
-  appendToRow(ws, 2, %w{ 1 Blahs BlahSingolare rails_stika_todo } )
+  #appendToRow(ws, 2, %w{ 1 Blahs BlahSingolare rails_stika_todo } )
   #appendToRow(ws, 3, %w{ 2 Cars Car AtPIasriaBelo } )
   ws.save
   ws[1, after_columns] = "Hostname"
@@ -47,20 +47,29 @@ def addSchemaWorksheet(ws, after_columns = 10)
   ws[1, after_columns+1] = "CLI" # A2
   ws[2, after_columns+1] = ARGV.join(" ") # B2
   ws[1, after_columns+2] = "Cmd" # A2
-  ws[2, after_columns+2] = $0 # inspectSchemaByTab(ws)
+  ws[2, after_columns+2] = $0 # inspectSchemaByTabAndPopulateSchemaRow(ws)
   ws.save
   ws.set_background_color(1, after_columns, 2, 3, GoogleDrive::Worksheet::Colors::DARK_YELLOW_1)
   ws.save
 end
+=begin
+  
+  "Latte (ML)!!\"£%".gsub(/[^a-zA-Z ]/,"").downcase().gsub(" ","_")
+  => "latte_ml"
+
+=end
+def modelNameCleanup(str)
+  str.gsub(/[^a-zA-Z ]/,"").downcase().gsub(" ","_")
+end
 
 def addToSchemaWsRelevantInfo(ix, ws, schema_ws)
   #print "addToSchemaWsRelevantInfo( #{ix}, #{ws.title}, #{schema_ws.title})\n" 
-  schemaCommand = inspectSchemaByTab(ws)
+  schemaCommand = inspectSchemaByTabAndPopulateSchemaRow(ws)
   model_name = ws.title.downcase().singularize()
   notes = "Model with #{schemaCommand.split(' ').count} entities and circa #{ws.num_rows-1} values."
   appendToRow(
     schema_ws, 
-    ix+3, # TODO(ricc): put 2 instead in prod. starts from 2: 1 is schema, 2 is a test
+    ix+2, # TODO(ricc): put 2 instead in prod. starts from 2: 1 is schema, 2 is a test
     [ix, ws.title, model_name, schemaCommand, notes ] 
   )
 
@@ -75,36 +84,37 @@ def dump_all_cells(ws)
   end
 end
 
-def inferColTypeByColumn(colname, arr)
+def inferColTypeByColumn(colname, arr, verbose=true)
   # detect from title
-  return "date" if %w( data date ).include?(colname)
+  #return "date" if %w( data date ).include?(colname)
   # nope - detect from majority of fields
-  votes={}
-  arr.each { |el|
-    votes[:bool] +=1 if el.in?(%w(true false)) 
-    # Float: https://stackoverflow.com/questions/1034418/determine-if-a-string-is-a-valid-float-value
-    votes[:float] +=1 if el =~ /^\s*[+-]?((\d+_?)*\d+(\.(\d+_?)*\d+)?|\.(\d+_?)*\d+)(\s*|([eE][+-]?(\d+_?)*\d+)\s*)$/
-    #print "#DEB# Inspecting #{el}: #{el.class}\n"
-  }
-  winner = 'todo'
-  print "#DEB# Winner '#{winner}' for '#{colname}'. Votes: #{votes}\n"
-
-  "string42"
+  #votes={}
+  #arr.each { |el|
+  #  votes[:bool] +=1 if el.in?(%w(true false)) 
+  #  # Float: https://stackoverflow.com/questions/1034418/determine-if-a-string-is-a-valid-float-value
+  #  votes[:float] +=1 if el =~ /^\s*[+-]?((\d+_?)*\d+(\.(\d+_?)*\d+)?|\.(\d+_?)*\d+)(\s*|([eE][+-]?(\d+_?)*\d+)\s*)$/
+  #  #print "#DEB# Inspecting #{el}: #{el.class}\n"
+  #}
+  ret = TypeDetector.autocast_array(arr)
+  #ret = arr.map{|el| TypeDetector.autocast(el.to_s()) }
+  print "#DEB# ret: #{ret} for #{arr}\n" if verbose
+  winner = ret[:class]
+  p "#DEB# Winner '#{winner}' for '#{colname}'. Accuracy: #{ret[:accuracy]}. Notes: #{ret[:notes]}\n" if verbose
+  return ret[:class]
 end
 
 
-def inspectSchemaByTab(ws)
+def inspectSchemaByTabAndPopulateSchemaRow(ws)
   arr = [] 
   modelname = ws.title.singularize()
   railsGenString = "rails generate scaffold #{modelname}"
   (1..ws.num_cols).each do |col|
     colname = ws[1, col]
-    print col, colname, "\n"
-    col_type="string" # TODO https://support.google.com/docs/answer/3267375
+    #col_type="string" # TODO https://support.google.com/docs/answer/3267375
     col_values = (0..(ws.num_rows-2)).map{ |i| ws.list[i][colname] } # -2: array is 0..-1 and first is title :)
-    print "#DEB# column values: #{col_values}\n"
-    col_type = inferColTypeByColumn(colname, col_values)
-    railsGenString += " #{ws[1, col]}:#{col_type}"
+    print "#DEB# column values for '#{colname}': #{col_values}\n"
+    col_type = inferColTypeByColumn(colname, col_values) # rescue "dunno"
+    railsGenString += " #{modelNameCleanup(ws[1, col])}:#{col_type}"
   end
   return railsGenString
 end
@@ -167,7 +177,7 @@ def main
   my_worksheet_tabs.select{|ws| ws.title =~ /^[A-Z]/ }.each{|ws| 
     #print_worksheet_headers(ws, "generic model (must start with capital letter)")
     #print "Title(#{ws.title}) Matcha? #{ws.title =~ /^[A-Z]/}\n"
-    #print inspectSchemaByTab(ws)
+    #print inspectSchemaByTabAndPopulateSchemaRow(ws)
     #addSchemaWorksheet(ws)
     addToSchemaWsRelevantInfo(ix, ws, $schema_ws)
     ix +=1 

@@ -1,0 +1,6 @@
+
+tutorial https://cloud.google.com/deployment-manager/docs/create-advanced-http-load-balanced-deployment#jinja_4
+
+deploy: gcloud deployment-manager deployments create advanced-configuration-l7 --config application.yaml
+
+

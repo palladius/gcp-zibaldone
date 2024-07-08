@@ -1,6 +1,8 @@
 # gcp-zibaldone
 
-GCP tests and playground, by product
+Self: https://github.com/palladius/gcp-zibaldone (PUBLIC)
+
+GCP tests and playground, by product.
 
 Folder structure:
 
